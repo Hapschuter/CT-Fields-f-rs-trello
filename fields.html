@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <title>CT Fields</title>
+
+    <link
+        rel="stylesheet"
+        href="https://p.trellocdn.com/power-up.min.css"
+    >
+
+    <script src="https://p.trellocdn.com/power-up.min.js"></script>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 0 2px;
+            background: transparent;
+        }
+
+        #ctFields {
+            width: 100%;
+        }
+
+        #fieldsGrid {
+            display: grid;
+
+            /* Immer drei Fields nebeneinander */
+            grid-template-columns:
+                repeat(3, minmax(0, 1fr));
+
+            column-gap: 7px;
+            row-gap: 5px;
+        }
+
+        .field {
+            min-width: 0;
+        }
+
+        .field label {
+            display: block;
+
+            margin-bottom: 2px;
+
+            font-size: 12px;
+            font-weight: 600;
+
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        select,
+        input {
+            width: 100%;
+            height: 33px;
+
+            margin: 0;
+            padding: 4px 8px;
+
+            border: none;
+            border-radius: 4px;
+
+            color: #ffffff;
+            font-size: 13px;
+        }
+
+        select {
+            cursor: pointer;
+        }
+
+        select:disabled,
+        input:disabled {
+            opacity: 1;
+            cursor: default;
+        }
+
+
+        /* =========================
+           FARBEN
+           ========================= */
+
+        .color-light-gray {
+            background-color: #555960;
+        }
+
+        .color-red {
+            background-color: #8f2924;
+        }
+
+        .color-blue {
+            background-color: #1f4f91;
+        }
+
+        .color-green {
+            background-color: #236c4b;
+        }
+
+        .color-purple {
+            background-color: #65479a;
+        }
+
+        .color-orange {
+            background-color: #a95412;
+        }
+
+        .color-yellow {
+            background-color: #856400;
+        }
+
+        .color-sky {
+            background-color: #238297;
+        }
+
+        .color-lime {
+            background-color: #596b2c;
+        }
+
+
+        /* =========================
+           PLAUSIBILITÄTSFEHLER
+           ========================= */
+
+        #plausibilityWarning {
+            display: none;
+
+            margin-top: 6px;
+
+            font-size: 12px;
+            font-weight: 700;
+
+            color: #f5cd47;
+        }
+
+
+        /* =========================
+           STATUS
+           ========================= */
+
+        #status {
+            min-height: 12px;
+
+            margin-top: 3px;
+
+            font-size: 10px;
+
+            opacity: 0.55;
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+<div id="ctFields">
+
+    <div id="fieldsGrid"></div>
+
+    <div id="plausibilityWarning">
+        ⚠ Plausibilitätsfehler
+    </div>
+
+    <div id="status"></div>
+
+</div>
+
+
+<script src="./config.js"></script>
+<script src="./fields.js"></script>
+
+</body>
+
+</html>

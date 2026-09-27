@@ -1,0 +1,798 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <title>CT Fields Einstellungen</title>
+
+
+    <link
+        rel="stylesheet"
+        href="https://p.trellocdn.com/power-up.min.css"
+    >
+
+
+    <script src="https://p.trellocdn.com/power-up.min.js"></script>
+
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+
+        body {
+            margin: 0;
+
+            /*
+             * Unten mehr Platz lassen,
+             * weil dort unsere schwebende Save-Leiste sitzt.
+             */
+            padding:
+                18px
+                18px
+                135px
+                18px;
+
+            background: transparent;
+        }
+
+
+        /* =========================
+           HEADER
+           ========================= */
+
+        .page-header {
+
+            display: flex;
+
+            justify-content:
+                space-between;
+
+            align-items:
+                flex-start;
+
+            gap: 16px;
+
+            margin-bottom: 18px;
+
+            padding: 16px 18px;
+
+            border:
+                1px solid
+                rgba(255,255,255,0.08);
+
+            border-radius: 12px;
+
+            background:
+                rgba(255,255,255,0.03);
+        }
+
+
+        .page-header h1 {
+
+            margin:
+                0 0 5px 0;
+
+            font-size: 23px;
+
+            line-height: 1.2;
+        }
+
+
+        .page-header p {
+
+            margin: 0;
+
+            max-width: 650px;
+
+            opacity: 0.72;
+
+            line-height: 1.4;
+        }
+
+
+        .header-badge {
+
+            flex-shrink: 0;
+
+            padding:
+                7px 10px;
+
+            border-radius:
+                999px;
+
+            background:
+                rgba(87,157,255,0.15);
+
+            color:
+                #9dc1ff;
+
+            font-size:
+                12px;
+
+            font-weight:
+                700;
+
+            white-space:
+                nowrap;
+        }
+
+
+        /* =========================
+           KATEGORIEN
+           ========================= */
+
+        #fieldsContainer {
+
+            display: flex;
+
+            flex-direction:
+                column;
+
+            gap: 10px;
+        }
+
+
+        .field-card {
+
+            overflow: hidden;
+
+            border:
+                1px solid
+                rgba(255,255,255,0.09);
+
+            border-radius: 10px;
+
+            background:
+                rgba(255,255,255,0.025);
+        }
+
+
+        .field-summary {
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content:
+                space-between;
+
+            gap: 12px;
+
+            padding:
+                12px 14px;
+
+            cursor: pointer;
+
+            list-style: none;
+
+            user-select: none;
+        }
+
+
+        .field-summary::-webkit-details-marker {
+            display: none;
+        }
+
+
+        .field-summary:hover {
+            background:
+                rgba(255,255,255,0.035);
+        }
+
+
+        .summary-left {
+
+            min-width: 0;
+
+            display: flex;
+
+            flex-direction:
+                column;
+
+            gap: 5px;
+        }
+
+
+        .summary-title {
+
+            font-size:
+                15px;
+
+            font-weight:
+                700;
+
+            line-height: 1.2;
+
+            overflow-wrap:
+                anywhere;
+        }
+
+
+        .summary-meta {
+
+            display: flex;
+
+            flex-wrap: wrap;
+
+            gap: 5px;
+        }
+
+
+        .meta-pill {
+
+            display:
+                inline-flex;
+
+            align-items:
+                center;
+
+            padding:
+                3px 8px;
+
+            border-radius:
+                999px;
+
+            background:
+                rgba(255,255,255,0.075);
+
+            font-size:
+                11px;
+
+            font-weight:
+                600;
+
+            opacity: 0.9;
+        }
+
+
+        .summary-right {
+
+            display: flex;
+
+            align-items:
+                center;
+
+            gap: 10px;
+
+            flex-shrink: 0;
+        }
+
+
+        .summary-color {
+
+            width: 13px;
+            height: 13px;
+
+            border-radius:
+                50%;
+
+            border:
+                1px solid
+                rgba(255,255,255,0.2);
+        }
+
+
+        .summary-chevron {
+
+            font-size: 19px;
+
+            opacity: 0.75;
+
+            transition:
+                transform 0.15s ease;
+        }
+
+
+        details[open]
+        .summary-chevron {
+
+            transform:
+                rotate(90deg);
+        }
+
+
+        /* =========================
+           KATEGORIE-INHALT
+           ========================= */
+
+        .field-body {
+
+            padding:
+                13px 14px 14px;
+
+            border-top:
+                1px solid
+                rgba(255,255,255,0.065);
+        }
+
+
+        .field-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                minmax(180px, 1fr)
+                145px
+                145px;
+
+            gap: 9px;
+        }
+
+
+        .group {
+
+            display: flex;
+
+            flex-direction:
+                column;
+
+            gap: 5px;
+        }
+
+
+        .group label {
+
+            font-size: 11px;
+
+            font-weight: 600;
+
+            opacity: 0.7;
+        }
+
+
+        input,
+        select {
+
+            width: 100%;
+
+            margin: 0;
+        }
+
+
+        .field-actions {
+
+            display: flex;
+
+            gap: 6px;
+
+            flex-wrap: wrap;
+
+            margin-top: 11px;
+        }
+
+
+        .field-actions button {
+
+            margin: 0;
+        }
+
+
+        /* =========================
+           AUSWAHLOPTIONEN
+           ========================= */
+
+        .options-panel {
+
+            margin-top: 13px;
+
+            padding: 12px;
+
+            border:
+                1px solid
+                rgba(255,255,255,0.065);
+
+            border-radius: 8px;
+
+            background:
+                rgba(0,0,0,0.08);
+        }
+
+
+        .options-head {
+
+            display: flex;
+
+            align-items:
+                center;
+
+            justify-content:
+                space-between;
+
+            gap: 12px;
+
+            margin-bottom: 10px;
+        }
+
+
+        .options-head h3 {
+
+            margin: 0 0 2px;
+
+            font-size: 14px;
+        }
+
+
+        .options-head p {
+
+            margin: 0;
+
+            font-size: 11px;
+
+            opacity: 0.65;
+        }
+
+
+        .option-list {
+
+            display: flex;
+
+            flex-direction:
+                column;
+
+            gap: 6px;
+        }
+
+
+        .option-row {
+
+            display: grid;
+
+            grid-template-columns:
+                minmax(160px, 1fr)
+                145px
+                auto;
+
+            align-items:
+                center;
+
+            gap: 6px;
+        }
+
+
+        .actions {
+
+            display: flex;
+
+            gap: 3px;
+        }
+
+
+        .actions button {
+
+            min-width: 31px;
+
+            margin: 0;
+
+            padding: 5px 7px;
+        }
+
+
+        #addFieldButton {
+
+            margin-top: 12px;
+        }
+
+
+        /* =========================
+           SCHWEBENDE SAVE-LEISTE
+           ========================= */
+
+        .sticky-bar {
+
+            position: fixed;
+
+            z-index: 1000;
+
+            left: 18px;
+            right: 18px;
+            bottom: 14px;
+
+            padding: 12px 14px;
+
+            border:
+                1px solid
+                rgba(255,255,255,0.11);
+
+            border-radius: 12px;
+
+            background:
+                rgba(27,30,36,0.96);
+
+            backdrop-filter:
+                blur(12px);
+
+            box-shadow:
+                0 8px 30px
+                rgba(0,0,0,0.45);
+        }
+
+
+        .sticky-top {
+
+            display: flex;
+
+            align-items:
+                center;
+
+            justify-content:
+                space-between;
+
+            gap: 12px;
+
+            margin-bottom: 8px;
+        }
+
+
+        .size-info {
+
+            font-size: 11px;
+
+            opacity: 0.7;
+        }
+
+
+        .status-pill {
+
+            display:
+                inline-flex;
+
+            align-items:
+                center;
+
+            min-height: 27px;
+
+            padding:
+                5px 10px;
+
+            border-radius:
+                999px;
+
+            font-size:
+                11px;
+
+            font-weight:
+                700;
+
+            background:
+                rgba(255,255,255,0.08);
+        }
+
+
+        .status-neutral {
+            color: #d6d9df;
+        }
+
+
+        .status-info {
+
+            color: #9dc1ff;
+
+            background:
+                rgba(87,157,255,0.15);
+        }
+
+
+        .status-warning {
+
+            color: #ffd58a;
+
+            background:
+                rgba(197,140,0,0.18);
+        }
+
+
+        .status-success {
+
+            color: #8ef0c0;
+
+            background:
+                rgba(52,168,83,0.18);
+        }
+
+
+        .status-error {
+
+            color: #ff9f9f;
+
+            background:
+                rgba(185,64,64,0.18);
+        }
+
+
+        .sticky-actions {
+
+            display: flex;
+
+            gap: 8px;
+        }
+
+
+        .sticky-actions button {
+
+            flex: 1;
+
+            margin: 0;
+        }
+
+
+        .warning-size {
+            color: #ffd58a;
+        }
+
+
+        .error-size {
+            color: #ff9f9f;
+        }
+
+
+        /* =========================
+           FARBEN
+           ========================= */
+
+        .color-light-gray {
+            background-color: #555960;
+        }
+
+        .color-red {
+            background-color: #8f2924;
+        }
+
+        .color-blue {
+            background-color: #1f4f91;
+        }
+
+        .color-green {
+            background-color: #236c4b;
+        }
+
+        .color-purple {
+            background-color: #65479a;
+        }
+
+        .color-orange {
+            background-color: #a95412;
+        }
+
+        .color-yellow {
+            background-color: #856400;
+        }
+
+        .color-sky {
+            background-color: #238297;
+        }
+
+        .color-lime {
+            background-color: #596b2c;
+        }
+
+
+        /* =========================
+           RESPONSIVE
+           ========================= */
+
+        @media (max-width: 650px) {
+
+            .page-header {
+                flex-direction:
+                    column;
+            }
+
+
+            .field-grid {
+
+                grid-template-columns:
+                    1fr;
+            }
+
+
+            .option-row {
+
+                grid-template-columns:
+                    1fr;
+            }
+
+
+            .sticky-top {
+
+                align-items:
+                    flex-start;
+
+                flex-direction:
+                    column;
+            }
+
+        }
+
+    </style>
+</head>
+
+
+<body>
+
+
+<div class="page-header">
+
+    <div>
+
+        <h1>CT Fields</h1>
+
+        <p>
+            Kategorien, Feldtypen, Auswahloptionen und Farben
+            für dieses Board verwalten.
+        </p>
+
+    </div>
+
+
+    <div class="header-badge">
+        Board-Einstellungen
+    </div>
+
+</div>
+
+
+<div id="fieldsContainer"></div>
+
+
+<button
+    type="button"
+    id="addFieldButton"
+>
+    + Neue Kategorie
+</button>
+
+
+<div class="sticky-bar">
+
+    <div class="sticky-top">
+
+        <div
+            id="sizeInfo"
+            class="size-info"
+        ></div>
+
+
+        <div
+            id="status"
+            class="status-pill status-neutral"
+        >
+            Bereit
+        </div>
+
+    </div>
+
+
+    <div class="sticky-actions">
+
+        <button
+            type="button"
+            id="defaultsButton"
+        >
+            Standardwerte laden
+        </button>
+
+
+        <button
+            type="button"
+            class="mod-primary"
+            id="saveButton"
+        >
+            Einstellungen speichern
+        </button>
+
+    </div>
+
+</div>
+
+
+<script src="./config.js"></script>
+<script src="./settings.js"></script>
+
+
+</body>
+</html>
