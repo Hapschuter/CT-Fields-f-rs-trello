@@ -1,10 +1,7 @@
 <!DOCTYPE html>
 <html lang="de">
-
 <head>
-
     <meta charset="UTF-8">
-
     <title>CT Fields</title>
 
     <link
@@ -12,10 +9,11 @@
         href="https://p.trellocdn.com/power-up.min.css"
     >
 
-    <script src="https://p.trellocdn.com/power-up.min.js"></script>
+    <script
+        src="https://p.trellocdn.com/power-up.min.js"
+    ></script>
 
     <style>
-
         * {
             box-sizing: border-box;
         }
@@ -32,11 +30,7 @@
 
         #fieldsGrid {
             display: grid;
-
-            /* Immer drei Fields nebeneinander */
-            grid-template-columns:
-                repeat(3, minmax(0, 1fr));
-
+            grid-template-columns: repeat(3, minmax(0, 1fr));
             column-gap: 7px;
             row-gap: 5px;
         }
@@ -47,12 +41,9 @@
 
         .field label {
             display: block;
-
             margin-bottom: 2px;
-
             font-size: 12px;
             font-weight: 600;
-
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
@@ -62,13 +53,10 @@
         input {
             width: 100%;
             height: 33px;
-
             margin: 0;
             padding: 4px 8px;
-
             border: none;
             border-radius: 4px;
-
             color: #ffffff;
             font-size: 13px;
         }
@@ -82,11 +70,6 @@
             opacity: 1;
             cursor: default;
         }
-
-
-        /* =========================
-           FARBEN
-           ========================= */
 
         .color-light-gray {
             background-color: #555960;
@@ -124,41 +107,22 @@
             background-color: #596b2c;
         }
 
-
-        /* =========================
-           PLAUSIBILITÄTSFEHLER
-           ========================= */
-
         #plausibilityWarning {
             display: none;
-
             margin-top: 6px;
-
             font-size: 12px;
             font-weight: 700;
-
             color: #f5cd47;
         }
 
-
-        /* =========================
-           STATUS
-           ========================= */
-
         #status {
             min-height: 12px;
-
             margin-top: 3px;
-
             font-size: 10px;
-
             opacity: 0.55;
         }
-
     </style>
-
 </head>
-
 
 <body>
 
@@ -175,22 +139,57 @@
 </div>
 
 
+<!--
+    Cache-Busting:
+    config.js wird zuerst geladen.
+    Danach fields.js mit derselben,
+    jedes Mal neuen Versionsnummer.
+-->
 <script>
 (function () {
-    var version = Date.now();
 
-    var configScript = document.createElement('script');
-    configScript.src = './config.js?v=' + version;
+    var version =
+        Date.now();
 
-    configScript.onload = function () {
-        var fieldsScript = document.createElement('script');
-        fieldsScript.src = './fields.js?v=' + version;
-        document.body.appendChild(fieldsScript);
-    };
 
-    document.body.appendChild(configScript);
+    var configScript =
+        document.createElement(
+            'script'
+        );
+
+
+    configScript.src =
+        './config.js?v=' +
+        version;
+
+
+    configScript.onload =
+        function () {
+
+            var fieldsScript =
+                document.createElement(
+                    'script'
+                );
+
+
+            fieldsScript.src =
+                './fields.js?v=' +
+                version;
+
+
+            document.body.appendChild(
+                fieldsScript
+            );
+
+        };
+
+
+    document.body.appendChild(
+        configScript
+    );
+
 })();
 </script>
-</body>
 
+</body>
 </html>
