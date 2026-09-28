@@ -129,66 +129,25 @@ function normalizeListName(name) {
 
 function checkPlausibility() {
 
-    // ==================================================
-    // RANG -> POSITION
-    // ==================================================
-
-    var positionRules = {
-
-        // Mannschaftsebene
-
-        'private-first-class':
-            'mannschaft',
-
-        'lance-corporal':
-            'mannschaft',
-
-        'corporal':
-            'mannschaft',
-
-
-        // Unteroffiziersebene
-
-        'sergeant':
-            'unteroffizierebene',
-
-        'staff-sergeant':
-            'unteroffizierebene',
-
-        'sergeant-major':
-            'unteroffizierebene',
-
-
-        // Führungsebene
-
-        'lieutenant':
-            'fuehrungsebene',
-
-        'first-lieutenant':
-            'fuehrungsebene',
-
-
-        // Hohe Führungsebene
-
-        'captain':
-            'hohe-fuehrungsebene',
-
-        'major':
-            'hohe-fuehrungsebene',
-
-        'commander':
-            'hohe-fuehrungsebene'
-
-    };
+    var normalizedList =
+        normalizeListName(
+            currentListName
+        );
 
 
     // ==================================================
-    // TRELLO-LISTE -> RANG
+    // LISTE -> RANG
     // ==================================================
+
+    /*
+     * Prüfung ausschließlich in diesen Spalten.
+     *
+     * Interessenten = Private First Class.
+     */
 
     var listRules = {
 
-        'private first class':
+        'interessenten':
             'private-first-class',
 
         'lance corporal':
@@ -224,6 +183,68 @@ function checkPlausibility() {
     };
 
 
+    /*
+     * Karte außerhalb der relevanten Spalten:
+     *
+     * keine Plausibilitätswarnung.
+     */
+
+    if (!listRules[normalizedList]) {
+
+        plausibilityWarning.style.display =
+            'none';
+
+        return;
+
+    }
+
+
+    // ==================================================
+    // RANG -> POSITION
+    // ==================================================
+
+    /*
+     * PFC steht bewusst nicht drin.
+     *
+     * Private First Class hat
+     * keine Positionsebene.
+     */
+
+    var positionRules = {
+
+        'lance-corporal':
+            'mannschaft',
+
+        'corporal':
+            'mannschaft',
+
+        'sergeant':
+            'unteroffizierebene',
+
+        'staff-sergeant':
+            'unteroffizierebene',
+
+        'sergeant-major':
+            'unteroffizierebene',
+
+        'lieutenant':
+            'fuehrungsebene',
+
+        'first-lieutenant':
+            'fuehrungsebene',
+
+        'captain':
+            'hohe-fuehrungsebene',
+
+        'major':
+            'hohe-fuehrungsebene',
+
+        'commander':
+            'hohe-fuehrungsebene'
+
+    };
+
+
     var rankField =
         getField(
             'rank'
@@ -253,6 +274,11 @@ function checkPlausibility() {
         );
 
 
+    /*
+     * Fehlender Rang ist kein
+     * Plausibilitätsfehler.
+     */
+
     if (!rank) {
 
         plausibilityWarning.style.display =
@@ -263,9 +289,19 @@ function checkPlausibility() {
     }
 
 
-    // Custom / unbekannte Ränge ignorieren
+    /*
+     * Nur bekannte Ränge prüfen.
+     *
+     * Custom / High General etc.
+     * werden ignoriert.
+     */
 
-    if (!positionRules[rank]) {
+    var isKnownRank =
+        rank === 'private-first-class' ||
+        !!positionRules[rank];
+
+
+    if (!isKnownRank) {
 
         plausibilityWarning.style.display =
             'none';
@@ -276,10 +312,34 @@ function checkPlausibility() {
 
 
     // ==================================================
-    // 1. RANG <-> POSITION
+    // 1. LISTE <-> RANG
     // ==================================================
 
-    if (positionField) {
+    if (
+        rank !==
+        listRules[normalizedList]
+    ) {
+
+        plausibilityWarning.style.display =
+            'block';
+
+        return;
+
+    }
+
+
+    // ==================================================
+    // 2. RANG <-> POSITION
+    // ==================================================
+
+    /*
+     * PFC wird hier bewusst übersprungen.
+     */
+
+    if (
+        positionRules[rank] &&
+        positionField
+    ) {
 
         var position =
             ctNormalizeValue(
@@ -302,33 +362,6 @@ function checkPlausibility() {
 
     }
 
-
-    // ==================================================
-    // 2. LISTE <-> RANG
-    // ==================================================
-
-    var expectedRank =
-        listRules[
-            normalizeListName(
-                currentListName
-            )
-        ];
-
-
-    if (
-        expectedRank &&
-        rank !== expectedRank
-    ) {
-
-        plausibilityWarning.style.display =
-            'block';
-
-        return;
-
-    }
-
-
-    // Alles korrekt
 
     plausibilityWarning.style.display =
         'none';
@@ -427,9 +460,7 @@ function saveData() {
         !loaded ||
         !canWrite
     ) {
-
         return;
-
     }
 
 
@@ -551,9 +582,10 @@ function createSelect(
         );
 
 
-    // ==================================================
-    // GELÖSCHTE / ALTE OPTION
-    // ==================================================
+    /*
+     * Gespeicherte Altwerte weiterhin anzeigen,
+     * falls eine Option später entfernt wurde.
+     */
 
     if (
         normalized &&
@@ -603,10 +635,12 @@ function createSelect(
         select,
 
         select.value
+
             ? ctGetValueColor(
                 field,
                 select.value
             )
+
             : 'light-gray'
 
     );
@@ -627,17 +661,18 @@ function createSelect(
                 select,
 
                 select.value
+
                     ? ctGetValueColor(
                         field,
                         select.value
                     )
+
                     : 'light-gray'
 
             );
 
 
             checkPlausibility();
-
 
             saveData();
 
@@ -883,7 +918,9 @@ t.render(function () {
         currentListName =
             values[2] &&
             values[2].name
+
                 ? values[2].name
+
                 : '';
 
 
@@ -904,7 +941,9 @@ t.render(function () {
 
         status.textContent =
             canWrite
+
                 ? 'Änderungen werden automatisch gespeichert.'
+
                 : 'Nur-Lese-Ansicht';
 
 
