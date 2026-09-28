@@ -17,7 +17,9 @@
         href="https://p.trellocdn.com/power-up.min.css"
     >
 
-    <script src="https://p.trellocdn.com/power-up.min.js"></script>
+    <script
+        src="https://p.trellocdn.com/power-up.min.js"
+    ></script>
 
 
     <style>
@@ -81,7 +83,9 @@
             margin: 0;
 
             padding:
-                26px 30px 50px;
+                26px
+                30px
+                50px;
 
             background:
                 var(--bg);
@@ -100,15 +104,20 @@
 
         button,
         input {
-            font: inherit;
+
+            font:
+                inherit;
+
         }
 
 
         .page {
 
-            width: 100%;
+            width:
+                100%;
 
-            max-width: 1500px;
+            max-width:
+                1500px;
 
             margin:
                 0 auto;
@@ -116,13 +125,10 @@
         }
 
 
-        /* =========================
-           HEADER
-           ========================= */
-
         .header {
 
-            display: flex;
+            display:
+                flex;
 
             justify-content:
                 space-between;
@@ -155,7 +161,8 @@
 
         .header p {
 
-            margin: 0;
+            margin:
+                0;
 
             color:
                 var(--muted);
@@ -168,7 +175,8 @@
 
         .header-actions {
 
-            display: flex;
+            display:
+                flex;
 
             align-items:
                 center;
@@ -198,16 +206,17 @@
 
         .secondary-button {
 
-            width: auto;
+            width:
+                auto;
 
-            margin: 0;
+            margin:
+                0;
 
             padding:
                 8px 13px;
 
             border:
-                1px solid
-                var(--border);
+                1px solid var(--border);
 
             border-radius:
                 7px;
@@ -246,13 +255,10 @@
         }
 
 
-        /* =========================
-           SUCHE
-           ========================= */
-
         .toolbar {
 
-            display: flex;
+            display:
+                flex;
 
             align-items:
                 center;
@@ -292,8 +298,7 @@
                 8px 40px 8px 12px;
 
             border:
-                1px solid
-                var(--border);
+                1px solid var(--border);
 
             border-radius:
                 8px;
@@ -310,8 +315,7 @@
         .search-wrap input:focus {
 
             outline:
-                2px solid
-                rgba(12, 102, 228, 0.25);
+                2px solid rgba(12, 102, 228, 0.25);
 
             border-color:
                 var(--blue);
@@ -380,8 +384,7 @@
                 8px 11px;
 
             border:
-                1px solid
-                var(--border);
+                1px solid var(--border);
 
             border-radius:
                 7px;
@@ -408,10 +411,6 @@
 
         }
 
-
-        /* =========================
-           LOADING
-           ========================= */
 
         #loading {
 
@@ -442,8 +441,7 @@
                 12px 15px;
 
             border:
-                1px solid
-                rgba(201, 55, 44, 0.4);
+                1px solid rgba(201, 55, 44, 0.4);
 
             border-radius:
                 8px;
@@ -467,10 +465,6 @@
 
         }
 
-
-        /* =========================
-           KPI
-           ========================= */
 
         .stats {
 
@@ -501,8 +495,7 @@
                 18px;
 
             border:
-                1px solid
-                var(--border);
+                1px solid var(--border);
 
             border-radius:
                 10px;
@@ -595,10 +588,6 @@
         }
 
 
-        /* =========================
-           PANELS
-           ========================= */
-
         .main-grid {
 
             display:
@@ -620,8 +609,7 @@
                 hidden;
 
             border:
-                1px solid
-                var(--border);
+                1px solid var(--border);
 
             border-radius:
                 10px;
@@ -658,15 +646,15 @@
                 15px 17px;
 
             border-bottom:
-                1px solid
-                var(--border);
+                1px solid var(--border);
 
         }
 
 
         .panel-head h2 {
 
-            margin: 0;
+            margin:
+                0;
 
             font-size:
                 16px;
@@ -695,10 +683,6 @@
 
         }
 
-
-        /* =========================
-           VERTEILUNGEN
-           ========================= */
 
         .distribution-row {
 
@@ -784,17 +768,16 @@
         }
 
 
-        /* =========================
-           TESTZEITEN
-           ========================= */
-
         .test-summary {
 
             display:
                 grid;
 
             grid-template-columns:
-                repeat(3, 1fr);
+                repeat(
+                    3,
+                    1fr
+                );
 
             gap:
                 9px;
@@ -868,10 +851,6 @@
         }
 
 
-        /* =========================
-           ROWS
-           ========================= */
-
         .rows {
 
             display:
@@ -908,6 +887,27 @@
             grid-template-columns:
                 minmax(0, 1fr)
                 auto;
+
+            gap:
+                15px;
+
+            align-items:
+                center;
+
+            padding:
+                10px 11px;
+
+        }
+
+
+        .issue-row {
+
+            display:
+                grid;
+
+            grid-template-columns:
+                minmax(220px, 0.8fr)
+                minmax(0, 1.2fr);
 
             gap:
                 15px;
@@ -979,10 +979,6 @@
         }
 
 
-        /* =========================
-           BADGES
-           ========================= */
-
         .badge,
         .issue {
 
@@ -1009,55 +1005,33 @@
 
         .badge-green {
 
-            color:
-                var(--green);
-
             background:
                 var(--soft-green);
+
+            color:
+                var(--green);
 
         }
 
 
         .badge-yellow {
 
-            color:
-                var(--yellow);
-
             background:
                 var(--soft-yellow);
+
+            color:
+                var(--yellow);
 
         }
 
 
         .badge-red {
 
-            color:
-                var(--red);
-
             background:
                 var(--soft-red);
 
-        }
-
-
-        /* =========================
-           AUFFÄLLIGKEITEN
-           ========================= */
-
-        .issue-row {
-
-            display:
-                grid;
-
-            grid-template-columns:
-                minmax(0, 260px)
-                minmax(0, 1fr);
-
-            gap:
-                16px;
-
-            padding:
-                11px;
+            color:
+                var(--red);
 
         }
 
@@ -1070,8 +1044,8 @@
             flex-wrap:
                 wrap;
 
-            align-items:
-                center;
+            justify-content:
+                flex-end;
 
             gap:
                 5px;
@@ -1081,49 +1055,56 @@
 
         .issue-error {
 
-            color:
-                var(--red);
-
             background:
                 var(--soft-red);
+
+            color:
+                var(--red);
 
         }
 
 
         .issue-warning {
 
-            color:
-                var(--yellow);
-
             background:
                 var(--soft-yellow);
+
+            color:
+                var(--yellow);
 
         }
 
 
         .issue-muted {
 
-            color:
-                var(--muted);
-
             background:
                 var(--soft-gray);
+
+            color:
+                var(--muted);
 
         }
 
 
-        /* =========================
-           DUPLIKATE
-           ========================= */
-
         .duplicate-group {
 
+            display:
+                flex;
+
+            align-items:
+                center;
+
+            flex-wrap:
+                wrap;
+
+            gap:
+                7px;
+
             padding:
-                10px 0;
+                9px 0;
 
             border-bottom:
-                1px solid
-                var(--border);
+                1px solid var(--border);
 
         }
 
@@ -1138,14 +1119,17 @@
 
         .duplicate-id {
 
-            margin-bottom:
-                6px;
+            min-width:
+                100px;
 
-            color:
-                var(--red);
+            font-size:
+                12px;
 
             font-weight:
                 750;
+
+            color:
+                var(--red);
 
         }
 
@@ -1156,39 +1140,36 @@
                 auto;
 
             margin:
-                0 5px 4px 0;
+                0;
 
             padding:
                 5px 8px;
 
             border:
-                0;
+                1px solid var(--border);
 
             border-radius:
-                5px;
+                6px;
 
             background:
-                var(--soft-red);
+                var(--card);
 
             color:
-                var(--red);
-
-            font-size:
-                11px;
-
-            font-weight:
-                650;
+                var(--text);
 
             cursor:
                 pointer;
+
+            font-size:
+                11px;
 
         }
 
 
         .duplicate-card:hover {
 
-            filter:
-                brightness(0.96);
+            background:
+                var(--card-hover);
 
         }
 
@@ -1196,18 +1177,48 @@
         .empty {
 
             padding:
-                18px 5px;
+                16px 8px;
 
             color:
                 var(--muted);
 
             font-size:
-                13px;
+                12px;
 
         }
 
 
-        @media (max-width: 950px) {
+        @media (max-width: 900px) {
+
+            body {
+
+                padding:
+                    18px 14px 36px;
+
+            }
+
+
+            .header {
+
+                align-items:
+                    flex-start;
+
+                flex-direction:
+                    column;
+
+            }
+
+
+            .header-actions {
+
+                width:
+                    100%;
+
+                justify-content:
+                    space-between;
+
+            }
+
 
             .stats {
 
@@ -1235,50 +1246,46 @@
 
             }
 
+
+            .distribution-row {
+
+                grid-template-columns:
+                    130px
+                    minmax(60px, 1fr)
+                    32px;
+
+            }
+
+
+            .issue-row {
+
+                grid-template-columns:
+                    1fr;
+
+            }
+
+
+            .issue-tags {
+
+                justify-content:
+                    flex-start;
+
+            }
+
         }
 
 
-        @media (max-width: 620px) {
-
-            body {
-
-                padding:
-                    18px 14px 40px;
-
-            }
-
-
-            .header {
-
-                align-items:
-                    flex-start;
-
-                flex-direction:
-                    column;
-
-            }
-
-
-            .header-actions {
-
-                width:
-                    100%;
-
-                justify-content:
-                    space-between;
-
-            }
-
-
-            .refresh-meta {
-
-                text-align:
-                    left;
-
-            }
-
+        @media (max-width: 520px) {
 
             .stats {
+
+                grid-template-columns:
+                    1fr;
+
+            }
+
+
+            .test-summary {
 
                 grid-template-columns:
                     1fr;
@@ -1289,39 +1296,15 @@
             .distribution-row {
 
                 grid-template-columns:
-                    125px
-                    minmax(50px, 1fr)
-                    30px;
+                    1fr 50px;
 
             }
 
 
-            .issue-row {
+            .distribution-track {
 
-                grid-template-columns:
-                    1fr;
-
-                gap:
-                    7px;
-
-            }
-
-
-            .panel-head {
-
-                align-items:
-                    flex-start;
-
-                flex-direction:
-                    column;
-
-            }
-
-
-            .test-summary {
-
-                grid-template-columns:
-                    1fr;
+                display:
+                    none;
 
             }
 
@@ -1336,15 +1319,17 @@
 
 <div class="page">
 
+
     <div class="header">
 
         <div>
 
-            <h1>CT Overview</h1>
+            <h1>
+                CT Overview
+            </h1>
 
             <p>
-                Übersicht über Mitglieder,
-                Testzeiten und CT-Fields.
+                Übersicht über Mitglieder, Ränge, Testzeiten und Auffälligkeiten
             </p>
 
         </div>
@@ -1370,15 +1355,13 @@
                 class="secondary-button"
                 type="button"
             >
-                ↻ Aktualisieren
+                Aktualisieren
             </button>
 
         </div>
 
     </div>
 
-
-    <!-- SUCHE -->
 
     <div class="toolbar">
 
@@ -1387,17 +1370,16 @@
             <input
                 id="searchInput"
                 type="text"
-                placeholder="Karte oder ID suchen …"
-                autocomplete="off"
+                placeholder="Kartenname oder ID suchen…"
             >
 
             <button
                 id="clearSearchButton"
                 class="clear-search"
                 type="button"
-                title="Suche leeren"
+                aria-label="Suche löschen"
             >
-                ✕
+                ×
             </button>
 
         </div>
@@ -1422,15 +1404,12 @@
     <div id="dashboard">
 
 
-        <!-- KPI -->
-
         <div class="stats">
 
 
             <div
                 class="stat-card"
                 data-filter="members"
-                role="button"
                 tabindex="0"
             >
 
@@ -1446,7 +1425,7 @@
                 </div>
 
                 <div class="stat-note">
-                    Private First Class nicht mitgezählt · anklicken zum Filtern
+                    Interessenten nicht mitgezählt
                 </div>
 
             </div>
@@ -1455,7 +1434,6 @@
             <div
                 class="stat-card"
                 data-filter="tests"
-                role="button"
                 tabindex="0"
             >
 
@@ -1471,7 +1449,7 @@
                 </div>
 
                 <div class="stat-note">
-                    Alle gesetzten Testzeiten · anklicken zum Filtern
+                    Alle Karten mit gesetzter Testzeit
                 </div>
 
             </div>
@@ -1480,7 +1458,6 @@
             <div
                 class="stat-card"
                 data-filter="incomplete"
-                role="button"
                 tabindex="0"
             >
 
@@ -1496,7 +1473,7 @@
                 </div>
 
                 <div class="stat-note">
-                    Rang, Position, Beförderung oder ID fehlt
+                    Pflichtfelder fehlen
                 </div>
 
             </div>
@@ -1505,7 +1482,6 @@
             <div
                 class="stat-card"
                 data-filter="plausibility"
-                role="button"
                 tabindex="0"
             >
 
@@ -1521,10 +1497,11 @@
                 </div>
 
                 <div class="stat-note">
-                    Rang ↔ Position oder Liste ↔ Rang
+                    Liste/Rang oder Rang/Position
                 </div>
 
             </div>
+
 
         </div>
 
@@ -1532,75 +1509,18 @@
         <div class="main-grid">
 
 
-            <!-- RANGVERTEILUNG -->
-
             <section class="panel">
 
                 <div class="panel-head">
 
                     <div>
 
-                        <h2>Rangverteilung</h2>
+                        <h2>
+                            Rangverteilung
+                        </h2>
 
                         <p>
-                            Alle überwachten Karten,
-                            inklusive PFC.
-                        </p>
-
-                    </div>
-
-                </div>
-
-
-                <div
-                    id="rankDistribution"
-                    class="panel-body"
-                ></div>
-
-            </section>
-
-
-            <!-- UNTEREINHEITEN -->
-
-            <section class="panel">
-
-                <div class="panel-head">
-
-                    <div>
-
-                        <h2>Untereinheiten</h2>
-
-                        <p>
-                            Verteilung aller überwachten Karten,
-                            inklusive PFC.
-                        </p>
-
-                    </div>
-
-                </div>
-
-
-                <div
-                    id="unitDistribution"
-                    class="panel-body"
-                ></div>
-
-            </section>
-
-
-            <!-- TESTZEIT -->
-
-            <section class="panel full">
-
-                <div class="panel-head">
-
-                    <div>
-
-                        <h2>Testzeiten</h2>
-
-                        <p>
-                            Gelb ab 3 Tagen vor Ablauf,
-                            rot nach Ablauf.
+                            Commander zählt maximal 1.
                         </p>
 
                     </div>
@@ -1609,6 +1529,63 @@
 
 
                 <div class="panel-body">
+
+                    <div id="rankDistribution"></div>
+
+                </div>
+
+            </section>
+
+
+            <section class="panel">
+
+                <div class="panel-head">
+
+                    <div>
+
+                        <h2>
+                            Untereinheiten
+                        </h2>
+
+                        <p>
+                            Verteilung nach konfigurierter Untereinheit
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="panel-body">
+
+                    <div id="unitDistribution"></div>
+
+                </div>
+
+            </section>
+
+
+            <section class="panel full">
+
+                <div class="panel-head">
+
+                    <div>
+
+                        <h2>
+                            Testzeiten
+                        </h2>
+
+                        <p>
+                            Laufend, bald ablaufend und abgelaufen
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="panel-body">
+
 
                     <div class="test-summary">
 
@@ -1633,7 +1610,7 @@
                             </strong>
 
                             <span>
-                                Bald ablaufend
+                                Läuft bald ab
                             </span>
 
                         </div>
@@ -1660,12 +1637,11 @@
                         class="rows"
                     ></div>
 
+
                 </div>
 
             </section>
 
-
-            <!-- FILTERERGEBNISSE -->
 
             <section
                 id="filteredPanel"
@@ -1682,8 +1658,7 @@
                         </h2>
 
                         <p>
-                            Karte anklicken,
-                            um sie direkt zu öffnen.
+                            Ergebnisse aus Suche oder KPI-Filter
                         </p>
 
                     </div>
@@ -1691,15 +1666,17 @@
                 </div>
 
 
-                <div
-                    id="filteredRows"
-                    class="panel-body rows"
-                ></div>
+                <div class="panel-body">
+
+                    <div
+                        id="filteredRows"
+                        class="rows"
+                    ></div>
+
+                </div>
 
             </section>
 
-
-            <!-- AUFFÄLLIGKEITEN -->
 
             <section class="panel full">
 
@@ -1707,13 +1684,12 @@
 
                     <div>
 
-                        <h2>Auffälligkeiten</h2>
+                        <h2>
+                            Auffälligkeiten
+                        </h2>
 
                         <p>
-                            Nach Relevanz sortiert.
-                            Rot = kritisch,
-                            Gelb = Warnung,
-                            Grau = fehlende Pflichtfelder.
+                            Nach Relevanz sortiert
                         </p>
 
                     </div>
@@ -1730,15 +1706,17 @@
                 </div>
 
 
-                <div
-                    id="issueRows"
-                    class="panel-body"
-                ></div>
+                <div class="panel-body">
+
+                    <div
+                        id="issueRows"
+                        class="rows"
+                    ></div>
+
+                </div>
 
             </section>
 
-
-            <!-- DOPPELTE IDS -->
 
             <section class="panel full">
 
@@ -1746,11 +1724,12 @@
 
                     <div>
 
-                        <h2>Doppelte IDs</h2>
+                        <h2>
+                            Doppelte IDs
+                        </h2>
 
                         <p>
-                            Gleiche ID auf mehreren
-                            überwachten Karten.
+                            Mehrfach verwendete CT-IDs
                         </p>
 
                     </div>
@@ -1758,10 +1737,11 @@
                 </div>
 
 
-                <div
-                    id="duplicateRows"
-                    class="panel-body"
-                ></div>
+                <div class="panel-body">
+
+                    <div id="duplicateRows"></div>
+
+                </div>
 
             </section>
 
@@ -1773,23 +1753,54 @@
 </div>
 
 
+<!--
+    Dashboard-Cache-Busting.
+-->
 <script>
 (function () {
-    var version = Date.now();
 
-    var configScript = document.createElement('script');
-    configScript.src = './config.js?v=' + version;
+    var version =
+        Date.now();
 
-    configScript.onload = function () {
-        var dashboardScript = document.createElement('script');
-        dashboardScript.src = './dashboard.js?v=' + version;
-        document.body.appendChild(dashboardScript);
-    };
 
-    document.body.appendChild(configScript);
+    var configScript =
+        document.createElement(
+            'script'
+        );
+
+
+    configScript.src =
+        './config.js?v=' +
+        version;
+
+
+    configScript.onload =
+        function () {
+
+            var dashboardScript =
+                document.createElement(
+                    'script'
+                );
+
+
+            dashboardScript.src =
+                './dashboard.js?v=' +
+                version;
+
+
+            document.body.appendChild(
+                dashboardScript
+            );
+
+        };
+
+
+    document.body.appendChild(
+        configScript
+    );
+
 })();
 </script>
 
 </body>
-
 </html>
