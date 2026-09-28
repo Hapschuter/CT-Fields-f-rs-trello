@@ -3,222 +3,94 @@ window.TrelloPowerUp.initialize({
     // ==================================================
     // BOARD BUTTONS
     // ==================================================
-
     'board-buttons': function (t) {
-
         return [
-
             {
                 text: 'CT Overview',
                 condition: 'edit',
-
                 callback: function (t) {
-
                     return t.modal({
                         title: 'CT Overview',
                         url: t.signUrl('./dashboard.html'),
                         fullscreen: true
                     });
-
                 }
             },
-
             {
                 text: 'CT Fields',
                 condition: 'admin',
-
                 callback: function (t) {
-
                     return t.modal({
                         title: 'CT Fields – Einstellungen',
                         url: t.signUrl('./settings.html'),
                         height: 720,
                         fullscreen: false
                     });
-
                 }
             }
-
         ];
-
     },
-
 
     // ==================================================
     // CT FIELDS IN DER GEÖFFNETEN KARTE
     // ==================================================
-
     'card-back-section': function (t) {
-
         return {
-
             title: 'CT Fields',
-
-            icon:
-                t.signUrl('./icon.svg'),
-
+            icon: t.signUrl('./icon.svg'),
             content: {
-
                 type: 'iframe',
-
-                url:
-                    t.signUrl('./fields.html'),
-
+                url: t.signUrl('./fields.html'),
                 height: 350
-
             }
-
         };
-
     },
-
 
     // ==================================================
     // BADGES AUF DER KARTENVORDERSEITE
     // ==================================================
-
     'card-badges': function (t) {
-
         return Promise.all([
-
-            t.get(
-                'board',
-                'shared',
-                'ctSchema',
-                null
-            ),
-
-            t.get(
-                'card',
-                'shared',
-                'characterData',
-                {}
-            ),
-
-            t.list(
-                'name'
-            )
-
+            t.get('board', 'shared', 'ctSchema', null),
+            t.get('card', 'shared', 'characterData', {}),
+            t.list('name')
         ]).then(function (values) {
-
-            var schema =
-                ctDecodeSchema(
-                    values[0]
-                );
-
-
-            var storedValues =
-                getStoredValues(
-                    values[1] || {}
-                );
-
-
-            var listName =
-                values[2] &&
-                values[2].name
-                    ? values[2].name
-                    : '';
-
-
+            var schema = ctDecodeSchema(values[0]);
+            var storedValues = getStoredValues(values[1] || {});
+            var listName = values[2] && values[2].name ? values[2].name : '';
             var badges = [];
 
-
-            // ==================================================
-            // NORMALE CT FIELDS
-            // ==================================================
-
-            (schema.fields || []).forEach(
-                function (field) {
-
-                    var value =
-                        storedValues[
-                            field.id
-                        ];
-
-
-                    if (!value) {
-                        return;
-                    }
-
-
-                    var displayValue =
-                        ctGetDisplayValue(
-                            field,
-                            value
-                        );
-
-
-                    if (
-                        field.type ===
-                        'date'
-                    ) {
-
-                        displayValue =
-                            formatDate(
-                                displayValue
-                            );
-
-                    }
-
-
-                    badges.push({
-
-                        text:
-                            field.label +
-                            ': ' +
-                            displayValue,
-
-                        color:
-                            ctGetValueColor(
-                                field,
-                                value
-                            )
-
-                    });
-
+            (schema.fields || []).forEach(function (field) {
+                var value = storedValues[field.id];
+                if (!value) {
+                    return;
                 }
-            );
 
+                var displayValue = ctGetDisplayValue(field, value);
 
-            // ==================================================
-            // PLAUSIBILITÄT
-            // ==================================================
-
-            if (
-                hasPlausibilityError(
-                    schema,
-                    storedValues,
-                    listName
-                )
-            ) {
+                if (field.type === 'date') {
+                    displayValue = formatDate(displayValue);
+                }
 
                 badges.push({
-
-                    text:
-                        '⚠ Plausibilitätsfehler',
-
-                    color:
-                        'yellow'
-
+                    text: field.label + ': ' + displayValue,
+                    color: ctGetValueColor(field, value)
                 });
+            });
 
+            if (hasPlausibilityError(schema, storedValues, listName)) {
+                badges.push({
+                    text: '⚠ Plausibilitätsfehler',
+                    color: 'yellow'
+                });
             }
-
 
             return badges;
 
         }).catch(function (error) {
-
-            console.error(
-                'CT Fields Badge Error:',
-                error
-            );
-
-
+            console.error('CT Fields Badge Error:', error);
             return [];
-
         });
-
     }
 
 });
@@ -229,17 +101,13 @@ window.TrelloPowerUp.initialize({
 // ======================================================
 
 function getStoredValues(data) {
-
     if (
         data &&
         data.v === 2 &&
         data.values
     ) {
-
         return data.values;
-
     }
-
 
     return data || {};
 }
@@ -249,32 +117,17 @@ function getStoredValues(data) {
 // FIELD FINDEN
 // ======================================================
 
-function getField(
-    schema,
-    id
-) {
-
+function getField(schema, id) {
     if (
         !schema ||
-        !Array.isArray(
-            schema.fields
-        )
+        !Array.isArray(schema.fields)
     ) {
-
         return null;
-
     }
 
-
-    return schema.fields.find(
-        function (field) {
-
-            return (
-                field.id === id
-            );
-
-        }
-    ) || null;
+    return schema.fields.find(function (field) {
+        return field.id === id;
+    }) || null;
 }
 
 
@@ -283,21 +136,10 @@ function getField(
 // ======================================================
 
 function normalizeListName(name) {
-
     return String(name || '')
-
-        .replace(
-            /↓/g,
-            ''
-        )
-
-        .replace(
-            /\s+/g,
-            ' '
-        )
-
+        .replace(/↓/g, '')
+        .replace(/\s+/g, ' ')
         .trim()
-
         .toLowerCase();
 }
 
@@ -312,66 +154,24 @@ function hasPlausibilityError(
     listName
 ) {
 
-    // ==================================================
-    // RANG -> POSITION
-    // ==================================================
-
-    var positionRules = {
-
-        // Mannschaftsebene
-
-        'private-first-class':
-            'mannschaft',
-
-        'lance-corporal':
-            'mannschaft',
-
-        'corporal':
-            'mannschaft',
-
-
-        // Unteroffiziersebene
-
-        'sergeant':
-            'unteroffizierebene',
-
-        'staff-sergeant':
-            'unteroffizierebene',
-
-        'sergeant-major':
-            'unteroffizierebene',
-
-
-        // Führungsebene
-
-        'lieutenant':
-            'fuehrungsebene',
-
-        'first-lieutenant':
-            'fuehrungsebene',
-
-
-        // Hohe Führungsebene
-
-        'captain':
-            'hohe-fuehrungsebene',
-
-        'major':
-            'hohe-fuehrungsebene',
-
-        'commander':
-            'hohe-fuehrungsebene'
-
-    };
+    var normalizedList =
+        normalizeListName(listName);
 
 
     // ==================================================
-    // TRELLO-LISTE -> RANG
+    // LISTE -> ERWARTETER RANG
     // ==================================================
+
+    /*
+     * Plausibilitätsprüfung läuft NUR
+     * in diesen 11 Spalten.
+     *
+     * Interessenten entspricht PFC.
+     */
 
     var listRules = {
 
-        'private first class':
+        'interessenten':
             'private-first-class',
 
         'lance corporal':
@@ -407,24 +207,74 @@ function hasPlausibilityError(
     };
 
 
+    /*
+     * Karte befindet sich außerhalb
+     * der Rang-/Interessenten-Spalten.
+     *
+     * → Kein Plausibilitätscheck.
+     */
+
+    if (!listRules[normalizedList]) {
+        return false;
+    }
+
+
+    // ==================================================
+    // RANG -> POSITION
+    // ==================================================
+
+    /*
+     * Private First Class steht bewusst
+     * NICHT in dieser Liste.
+     *
+     * PFC hat keine Positionsebene.
+     */
+
+    var positionRules = {
+
+        'lance-corporal':
+            'mannschaft',
+
+        'corporal':
+            'mannschaft',
+
+        'sergeant':
+            'unteroffizierebene',
+
+        'staff-sergeant':
+            'unteroffizierebene',
+
+        'sergeant-major':
+            'unteroffizierebene',
+
+        'lieutenant':
+            'fuehrungsebene',
+
+        'first-lieutenant':
+            'fuehrungsebene',
+
+        'captain':
+            'hohe-fuehrungsebene',
+
+        'major':
+            'hohe-fuehrungsebene',
+
+        'commander':
+            'hohe-fuehrungsebene'
+
+    };
+
+
     var rankField =
-        getField(
-            schema,
-            'rank'
-        );
+        getField(schema, 'rank');
 
 
     var positionField =
-        getField(
-            schema,
-            'position'
-        );
+        getField(schema, 'position');
 
 
     if (!rankField) {
-
         return false;
-
     }
 
 
@@ -435,29 +285,60 @@ function hasPlausibilityError(
         );
 
 
-    // Kein Rang = kein Plausibilitätsfehler
+    /*
+     * Fehlender Rang:
+     *
+     * im Overview = unvollständig
+     * aber NICHT Plausibilitätsfehler.
+     */
 
     if (!rank) {
-
         return false;
-
     }
 
 
-    // Andere/custom Ränge nicht prüfen
+    /*
+     * Nur bekannte Ränge prüfen.
+     *
+     * High General / Custom-Ränge usw.
+     * werden ignoriert.
+     */
 
-    if (!positionRules[rank]) {
+    var isKnownRank =
+        rank === 'private-first-class' ||
+        !!positionRules[rank];
 
+
+    if (!isKnownRank) {
         return false;
-
     }
 
 
     // ==================================================
-    // 1. RANG <-> POSITION
+    // 1. LISTE <-> RANG
     // ==================================================
 
-    if (positionField) {
+    if (
+        rank !==
+        listRules[normalizedList]
+    ) {
+        return true;
+    }
+
+
+    // ==================================================
+    // 2. RANG <-> POSITION
+    // ==================================================
+
+    /*
+     * Bei Private First Class
+     * wird dieser Block übersprungen.
+     */
+
+    if (
+        positionRules[rank] &&
+        positionField
+    ) {
 
         var position =
             ctNormalizeValue(
@@ -470,32 +351,8 @@ function hasPlausibilityError(
             position !==
             positionRules[rank]
         ) {
-
             return true;
-
         }
-
-    }
-
-
-    // ==================================================
-    // 2. LISTE <-> RANG
-    // ==================================================
-
-    var expectedRank =
-        listRules[
-            normalizeListName(
-                listName
-            )
-        ];
-
-
-    if (
-        expectedRank &&
-        rank !== expectedRank
-    ) {
-
-        return true;
 
     }
 
@@ -511,9 +368,7 @@ function hasPlausibilityError(
 function formatDate(dateString) {
 
     if (!dateString) {
-
         return '';
-
     }
 
 
@@ -525,9 +380,7 @@ function formatDate(dateString) {
     if (
         parts.length !== 3
     ) {
-
         return dateString;
-
     }
 
 
