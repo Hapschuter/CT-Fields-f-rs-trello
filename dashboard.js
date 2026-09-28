@@ -1,15 +1,10 @@
-var t = window.TrelloPowerUp.iframe();
+var t =
+    window.TrelloPowerUp.iframe();
 
 
 // ======================================================
 // ÜBERWACHTE SPALTEN
 // ======================================================
-
-/*
- * Nur diese Spalten werden im CT Overview ausgewertet.
- *
- * Interessenten entspricht Private First Class.
- */
 
 var MONITORED_LISTS = [
 
@@ -43,11 +38,10 @@ var MONITORED_LISTS = [
 // ======================================================
 
 /*
- * Interessenten / PFC zählt NICHT
- * bei "Mitglieder gesamt".
+ * Interessenten zählt nicht.
  *
- * Commander zählt maximal einmal,
- * egal wie viele Karten dort liegen.
+ * Commander zählt für die Mitglieder-KPI
+ * maximal einmal.
  */
 
 var MEMBER_LISTS = [
@@ -310,7 +304,8 @@ function getField(
         function (field) {
 
             return (
-                field.id === id
+                field.id ===
+                id
             );
 
         }
@@ -326,20 +321,24 @@ function hasValue(value) {
 
     return (
 
-        value !== null &&
+        value !== null
 
-        value !== undefined &&
+        &&
 
-        String(value)
-            .trim()
-            .length > 0
+        value !== undefined
+
+        &&
+
+        String(
+            value
+        ).trim().length > 0
 
     );
 }
 
 
 // ======================================================
-// HTML
+// HTML ESCAPE
 // ======================================================
 
 function escapeHtml(value) {
@@ -387,12 +386,14 @@ function parseDate(value) {
 
 
     var parts =
-        String(value)
-            .split('-');
+        String(
+            value
+        ).split('-');
 
 
     if (
-        parts.length !== 3
+        parts.length !==
+        3
     ) {
 
         return null;
@@ -469,12 +470,14 @@ function formatDate(value) {
 
 
     var parts =
-        String(value)
-            .split('-');
+        String(
+            value
+        ).split('-');
 
 
     if (
-        parts.length !== 3
+        parts.length !==
+        3
     ) {
 
         return value;
@@ -504,7 +507,6 @@ function formatTime(date) {
     return date.toLocaleTimeString(
         'de-AT',
         {
-
             hour:
                 '2-digit',
 
@@ -513,7 +515,6 @@ function formatTime(date) {
 
             second:
                 '2-digit'
-
         }
     );
 }
@@ -558,7 +559,6 @@ function getTestStatus(value) {
     ) {
 
         return {
-
             id:
                 'expired',
 
@@ -567,18 +567,17 @@ function getTestStatus(value) {
 
             days:
                 difference
-
         };
 
     }
 
 
     if (
-        difference <= 3
+        difference <=
+        3
     ) {
 
         return {
-
             id:
                 'soon',
 
@@ -587,14 +586,12 @@ function getTestStatus(value) {
 
             days:
                 difference
-
         };
 
     }
 
 
     return {
-
         id:
             'running',
 
@@ -603,7 +600,6 @@ function getTestStatus(value) {
 
         days:
             difference
-
     };
 }
 
@@ -647,8 +643,15 @@ function getCtColorHex(color) {
 
 
     return (
-        colors[color] ||
-        colors['light-gray']
+        colors[
+            color
+        ]
+
+        ||
+
+        colors[
+            'light-gray'
+        ]
     );
 }
 
@@ -688,52 +691,47 @@ function getMissingFields(
 
 
     /*
-     * Diese Felder sind immer Pflicht.
+     * Immer Pflicht:
+     *
+     * Rang
+     * Letzte Beförderung
+     * ID
      */
 
     var required = [
 
         {
-
             id:
                 'rank',
 
             fallback:
                 'Rang'
-
         },
 
         {
-
             id:
                 'promotion',
 
             fallback:
                 'Letzte Beförderung'
-
         },
 
         {
-
             id:
                 'ctId',
 
             fallback:
                 'ID'
-
         }
 
     ];
 
 
     /*
-     * Position ist grundsätzlich Pflicht.
+     * Position ist normalerweise Pflicht.
      *
      * Ausnahme:
-     * Private First Class / Interessenten.
-     *
-     * Auch wenn der Rang in Interessenten
-     * noch leer ist, wird keine Position verlangt.
+     * Interessenten / Private First Class.
      */
 
     var isPfc = (
@@ -758,13 +756,11 @@ function getMissingFields(
             0,
 
             {
-
                 id:
                     'position',
 
                 fallback:
                     'Position'
-
             }
 
         );
@@ -802,7 +798,9 @@ function getMissingFields(
             missing.push(
 
                 field
+
                     ? field.label
+
                     : requiredField.fallback
 
             );
@@ -834,11 +832,6 @@ function getPlausibilityIssues(
     // ==================================================
     // LISTE -> RANG
     // ==================================================
-
-    /*
-     * Nur in diesen Spalten
-     * läuft überhaupt ein Check.
-     */
 
     var listRules = {
 
@@ -878,7 +871,16 @@ function getPlausibilityIssues(
     };
 
 
-    if (!listRules[normalizedList]) {
+    /*
+     * Außerhalb Interessenten -> Commander
+     * keinerlei Plausibilitätscheck.
+     */
+
+    if (
+        !listRules[
+            normalizedList
+        ]
+    ) {
 
         return [];
 
@@ -961,8 +963,8 @@ function getPlausibilityIssues(
 
 
     /*
-     * Fehlender Rang:
-     * unvollständig, aber kein Plausibilitätsfehler.
+     * Fehlender Rang = unvollständig,
+     * aber kein Plausibilitätsfehler.
      */
 
     if (!rank) {
@@ -973,13 +975,19 @@ function getPlausibilityIssues(
 
 
     /*
-     * Custom / High General etc.
-     * werden nicht geprüft.
+     * Custom / High General usw.
+     * ignorieren.
      */
 
     var isKnownRank =
-        rank === 'private-first-class' ||
-        !!positionRules[rank];
+        rank ===
+        'private-first-class'
+
+        ||
+
+        !!positionRules[
+            rank
+        ];
 
 
     if (!isKnownRank) {
@@ -990,12 +998,14 @@ function getPlausibilityIssues(
 
 
     // ==================================================
-    // 1. LISTE <-> RANG
+    // LISTE <-> RANG
     // ==================================================
 
     if (
         rank !==
-        listRules[normalizedList]
+        listRules[
+            normalizedList
+        ]
     ) {
 
         issues.push({
@@ -1018,15 +1028,20 @@ function getPlausibilityIssues(
 
 
     // ==================================================
-    // 2. RANG <-> POSITION
+    // RANG <-> POSITION
     // ==================================================
 
     /*
-     * PFC wird nicht geprüft.
+     * PFC wird übersprungen.
      */
 
     if (
-        positionRules[rank] &&
+        positionRules[
+            rank
+        ]
+
+        &&
+
         positionField
     ) {
 
@@ -1039,7 +1054,9 @@ function getPlausibilityIssues(
 
         if (
             position !==
-            positionRules[rank]
+            positionRules[
+                rank
+            ]
         ) {
 
             issues.push({
@@ -1142,8 +1159,8 @@ function analyze(
 
 
     /*
-     * Overview wertet nur
-     * Interessenten bis Commander aus.
+     * Nur Interessenten bis Commander
+     * werden im Overview ausgewertet.
      */
 
     var relevantCards =
@@ -1158,7 +1175,9 @@ function analyze(
 
                 return (
 
-                    list &&
+                    list
+
+                    &&
 
                     MONITORED_LISTS.indexOf(
                         list.normalized
@@ -1225,7 +1244,7 @@ function analyze(
 
 
 // ======================================================
-// RESULT
+// RESULT ERSTELLEN
 // ======================================================
 
 function buildResult(
@@ -1304,24 +1323,26 @@ function buildResult(
 
 
     /*
-     * Für die Sonderregel:
-     *
-     * Commander zählt bei "Mitglieder gesamt"
-     * maximal einmal.
+     * Commander darf bei der Mitgliederzahl
+     * nur einmal zählen.
      */
 
     var commanderAlreadyCounted =
         false;
 
 
+    /*
+     * Commander darf auch in der
+     * Rangverteilung nur einmal zählen.
+     */
+
+    var commanderRankAlreadyCounted =
+        false;
+
+
     // ==================================================
     // RÄNGE INITIALISIEREN
     // ==================================================
-
-    /*
-     * Alle konfigurierten Ränge anzeigen,
-     * auch wenn die Anzahl 0 ist.
-     */
 
     if (rankField) {
 
@@ -1330,6 +1351,42 @@ function buildResult(
             []
         ).forEach(
             function (option) {
+
+                var optionId =
+                    String(
+                        option.id || ''
+                    )
+                    .trim()
+                    .toLowerCase();
+
+
+                var optionLabel =
+                    String(
+                        option.label || ''
+                    )
+                    .trim()
+                    .toLowerCase();
+
+
+                /*
+                 * High General wird im Dashboard
+                 * komplett ausgeblendet.
+                 */
+
+                if (
+                    optionId ===
+                    'high-general'
+
+                    ||
+
+                    optionLabel ===
+                    'high general'
+                ) {
+
+                    return;
+
+                }
+
 
                 rankMap[
                     option.id
@@ -1527,13 +1584,13 @@ function buildResult(
 
             /*
              * Interessenten:
-             * → nie zählen
+             * 0
              *
              * Lance Corporal bis Major:
-             * → jede Karte = 1 Mitglied
+             * jede Karte zählt
              *
              * Commander:
-             * → maximal 1 Mitglied
+             * maximal 1
              */
 
             if (isMember) {
@@ -1548,6 +1605,7 @@ function buildResult(
                     ) {
 
                         result.memberCount++;
+
 
                         commanderAlreadyCounted =
                             true;
@@ -1567,23 +1625,47 @@ function buildResult(
             // RANGVERTEILUNG
             // ==================================================
 
-            /*
-             * Hier werden weiterhin ALLE
-             * Commander-Karten normal gezählt.
-             *
-             * Sonderregel gilt nur für Mitglieder gesamt.
-             */
-
             if (
-                rankId &&
+                rankId
+
+                &&
+
                 rankMap[
                     rankId
                 ]
             ) {
 
-                rankMap[
-                    rankId
-                ].count++;
+                /*
+                 * Commander ebenfalls
+                 * maximal einmal anzeigen.
+                 */
+
+                if (
+                    rankId ===
+                    'commander'
+                ) {
+
+                    if (
+                        !commanderRankAlreadyCounted
+                    ) {
+
+                        rankMap[
+                            rankId
+                        ].count++;
+
+
+                        commanderRankAlreadyCounted =
+                            true;
+
+                    }
+
+                } else {
+
+                    rankMap[
+                        rankId
+                    ].count++;
+
+                }
 
             }
 
@@ -1593,7 +1675,10 @@ function buildResult(
             // ==================================================
 
             if (
-                unitId &&
+                unitId
+
+                &&
+
                 unitMap[
                     unitId
                 ]
@@ -1678,11 +1763,6 @@ function buildResult(
                     values.testUntil
                 )
             ) {
-
-                /*
-                 * Jede gesetzte Testzeit zählt,
-                 * auch wenn sie bereits abgelaufen ist.
-                 */
 
                 result.testCount++;
 
@@ -1846,7 +1926,9 @@ function buildResult(
         function (key) {
 
             var group =
-                ids[key];
+                ids[
+                    key
+                ];
 
 
             if (
@@ -1984,7 +2066,8 @@ function buildResult(
             if (
                 weights[
                     a.status.id
-                ] !==
+                ]
+                !==
                 weights[
                     b.status.id
                 ]
@@ -2083,7 +2166,10 @@ function buildResult(
 function getItemPriority(item) {
 
     if (
-        !item.problems ||
+        !item.problems
+
+        ||
+
         item.problems.length ===
         0
     ) {
@@ -2225,7 +2311,9 @@ function matchesFilter(item) {
 
 function getFilteredItems() {
 
-    if (!state.result) {
+    if (
+        !state.result
+    ) {
 
         return [];
 
@@ -2350,7 +2438,9 @@ function renderDistribution(
         '';
 
 
-    if (!items.length) {
+    if (
+        !items.length
+    ) {
 
         container.innerHTML =
 
@@ -2379,9 +2469,7 @@ function renderDistribution(
                     return item.count;
 
                 }
-            )
-
-            .concat(
+            ).concat(
                 [1]
             )
 
@@ -2416,14 +2504,13 @@ function renderDistribution(
                         item.label
                     ) +
 
-                    '">' +
+                '">' +
 
                     escapeHtml(
                         item.label
                     ) +
 
                 '</div>' +
-
 
                 '<div class="distribution-track">' +
 
@@ -2437,10 +2524,9 @@ function renderDistribution(
                             item.color
                         ) +
 
-                        '"></div>' +
+                    '"></div>' +
 
                 '</div>' +
-
 
                 '<div class="distribution-count">' +
 
@@ -2464,7 +2550,9 @@ function renderDistribution(
 
 function renderFilteredViews() {
 
-    if (!state.result) {
+    if (
+        !state.result
+    ) {
 
         return;
 
@@ -2472,6 +2560,7 @@ function renderFilteredViews() {
 
 
     updateKpiState();
+
 
     updateFilterInfo();
 
@@ -2596,7 +2685,9 @@ function updateFilterInfo() {
     }
 
 
-    if (state.search) {
+    if (
+        state.search
+    ) {
 
         parts.push(
 
@@ -2609,7 +2700,9 @@ function updateFilterInfo() {
     }
 
 
-    if (!parts.length) {
+    if (
+        !parts.length
+    ) {
 
         els.filterInfo.classList.remove(
             'visible'
@@ -2669,11 +2762,15 @@ function renderFilteredCards(items) {
 
     els.filteredPanel.style.display =
         shouldShow
+
             ? 'block'
+
             : 'none';
 
 
-    if (!shouldShow) {
+    if (
+        !shouldShow
+    ) {
 
         return;
 
@@ -2681,7 +2778,6 @@ function renderFilteredCards(items) {
 
 
     els.filteredTitle.textContent =
-
         state.search
 
             ? 'Such-/Filterergebnisse'
@@ -2693,15 +2789,12 @@ function renderFilteredCards(items) {
         '';
 
 
-    if (!items.length) {
+    if (
+        !items.length
+    ) {
 
         els.filteredRows.innerHTML =
-
-            '<div class="empty">' +
-
-                'Keine passenden Karten gefunden.' +
-
-            '</div>';
+            '<div class="empty">Keine passenden Karten gefunden.</div>';
 
 
         return;
@@ -2726,13 +2819,13 @@ function renderFilteredCards(items) {
                 [];
 
 
-            if (item.ctId) {
+            if (
+                item.ctId
+            ) {
 
                 meta.push(
-
                     'ID ' +
                     item.ctId
-
                 );
 
             }
@@ -2767,11 +2860,7 @@ function renderFilteredCards(items) {
 
                 '</div>' +
 
-                '<span class="open-hint">' +
-
-                    'Öffnen ›' +
-
-                '</span>';
+                '<span class="open-hint">Öffnen ›</span>';
 
 
             row.addEventListener(
@@ -2805,15 +2894,12 @@ function renderTests(tests) {
         '';
 
 
-    if (!tests.length) {
+    if (
+        !tests.length
+    ) {
 
         els.testRows.innerHTML =
-
-            '<div class="empty">' +
-
-                'Keine passenden Testzeiten.' +
-
-            '</div>';
+            '<div class="empty">Keine passenden Testzeiten.</div>';
 
 
         return;
@@ -2963,15 +3049,12 @@ function renderIssues(issues) {
         0;
 
 
-    if (!issues.length) {
+    if (
+        !issues.length
+    ) {
 
         els.issueRows.innerHTML =
-
-            '<div class="empty">' +
-
-                '✓ Keine passenden Auffälligkeiten gefunden.' +
-
-            '</div>';
+            '<div class="empty">✓ Keine passenden Auffälligkeiten gefunden.</div>';
 
 
         return;
@@ -2995,58 +3078,58 @@ function renderIssues(issues) {
             var tags =
                 item.problems
 
-                    .slice()
+                .slice()
 
-                    .sort(
-                        function (
-                            a,
-                            b
-                        ) {
+                .sort(
+                    function (
+                        a,
+                        b
+                    ) {
 
-                            return (
+                        return (
 
-                                (
-                                    b.priority ||
-                                    0
-                                )
+                            (
+                                b.priority ||
+                                0
+                            )
 
-                                -
+                            -
 
-                                (
-                                    a.priority ||
-                                    0
-                                )
+                            (
+                                a.priority ||
+                                0
+                            )
 
-                            );
+                        );
 
-                        }
-                    )
+                    }
+                )
 
-                    .map(
-                        function (problem) {
+                .map(
+                    function (problem) {
 
-                            return (
+                        return (
 
-                                '<span class="issue ' +
+                            '<span class="issue ' +
 
-                                    getIssueClass(
-                                        problem
-                                    ) +
+                            getIssueClass(
+                                problem
+                            ) +
 
-                                '">' +
+                            '">' +
 
-                                    escapeHtml(
-                                        problem.text
-                                    ) +
+                            escapeHtml(
+                                problem.text
+                            ) +
 
-                                '</span>'
+                            '</span>'
 
-                            );
+                        );
 
-                        }
-                    )
+                    }
+                )
 
-                    .join('');
+                .join('');
 
 
             var meta =
@@ -3128,51 +3211,48 @@ function renderDuplicates(
     var visibleGroups =
         groups
 
-            .map(
-                function (group) {
+        .map(
+            function (group) {
 
-                    return {
+                return {
 
-                        id:
-                            group.id,
+                    id:
+                        group.id,
 
-                        items:
-                            group.items.filter(
-                                function (item) {
+                    items:
+                        group.items.filter(
+                            function (item) {
 
-                                    return visibleIds[
-                                        item.card.id
-                                    ];
+                                return visibleIds[
+                                    item.card.id
+                                ];
 
-                                }
-                            )
+                            }
+                        )
 
-                    };
+                };
 
-                }
-            )
+            }
+        )
 
-            .filter(
-                function (group) {
+        .filter(
+            function (group) {
 
-                    return (
-                        group.items.length >
-                        0
-                    );
+                return (
+                    group.items.length >
+                    0
+                );
 
-                }
-            );
+            }
+        );
 
 
-    if (!visibleGroups.length) {
+    if (
+        !visibleGroups.length
+    ) {
 
         els.duplicateRows.innerHTML =
-
-            '<div class="empty">' +
-
-                '✓ Keine passenden doppelten IDs gefunden.' +
-
-            '</div>';
+            '<div class="empty">✓ Keine passenden doppelten IDs gefunden.</div>';
 
 
         return;
@@ -3269,7 +3349,9 @@ function renderDuplicates(
 
 function getVisibleIssues() {
 
-    if (!state.result) {
+    if (
+        !state.result
+    ) {
 
         return [];
 
@@ -3350,63 +3432,62 @@ function buildDiscordIssueText(issues) {
 
             item.problems
 
-                .slice()
+            .slice()
 
-                .sort(
-                    function (
-                        a,
-                        b
-                    ) {
+            .sort(
+                function (
+                    a,
+                    b
+                ) {
 
-                        return (
+                    return (
 
-                            (
-                                b.priority ||
-                                0
-                            )
+                        (
+                            b.priority ||
+                            0
+                        )
 
-                            -
+                        -
 
-                            (
-                                a.priority ||
-                                0
-                            )
+                        (
+                            a.priority ||
+                            0
+                        )
 
-                        );
+                    );
 
-                    }
-                )
+                }
+            )
 
-                .forEach(
-                    function (problem) {
+            .forEach(
+                function (problem) {
 
-                        var symbol =
+                    var symbol =
+                        problem.severity ===
+                        'error'
 
-                            problem.severity ===
-                            'error'
+                            ? '🔴'
 
-                                ? '🔴'
+                            : (
+                                problem.severity ===
+                                'warning'
 
-                                : (
-                                    problem.severity ===
-                                    'warning'
+                                    ? '⚠️'
 
-                                        ? '⚠️'
-
-                                        : '•'
-                                );
+                                    : '•'
+                            );
 
 
-                        lines.push(
+                    lines.push(
 
-                            symbol +
-                            ' ' +
-                            problem.text
+                        symbol +
+                        ' ' +
+                        problem.text
 
-                        );
+                    );
 
-                    }
-                );
+                }
+            );
 
 
             lines.push(
@@ -3430,7 +3511,10 @@ function buildDiscordIssueText(issues) {
 function copyText(text) {
 
     if (
-        navigator.clipboard &&
+        navigator.clipboard
+
+        &&
+
         navigator.clipboard.writeText
     ) {
 
@@ -3474,6 +3558,7 @@ function copyText(text) {
 
                 textarea.focus();
 
+
                 textarea.select();
 
 
@@ -3512,10 +3597,6 @@ function copyText(text) {
 }
 
 
-// ======================================================
-// COPY BUTTON
-// ======================================================
-
 function flashCopyButton(text) {
 
     var original =
@@ -3545,7 +3626,8 @@ function flashCopyButton(text) {
 function loadDashboard(options) {
 
     options =
-        options || {};
+        options ||
+        {};
 
 
     if (
@@ -3570,7 +3652,10 @@ function loadDashboard(options) {
 
 
     if (
-        !options.silent ||
+        !options.silent
+
+        ||
+
         !state.result
     ) {
 
@@ -3776,15 +3861,17 @@ function updateAutoRefreshInfo() {
 
 
     if (
-        seconds <= 0 &&
+        seconds <=
+        0
+
+        &&
+
         !state.loading
     ) {
 
         loadDashboard({
-
             silent:
                 true
-
         });
 
     }
@@ -3800,10 +3887,8 @@ els.refreshButton.addEventListener(
     function () {
 
         loadDashboard({
-
             silent:
                 !!state.result
-
         });
 
     }
@@ -3820,9 +3905,10 @@ els.searchInput.addEventListener(
 
 
         els.clearSearchButton.style.visibility =
-
             state.search
+
                 ? 'visible'
+
                 : 'hidden';
 
 
@@ -3873,7 +3959,6 @@ document.querySelectorAll(
 
 
                 state.filter =
-
                     state.filter ===
                     selected
 
@@ -3924,7 +4009,9 @@ els.copyIssuesButton.addEventListener(
             getVisibleIssues();
 
 
-        if (!issues.length) {
+        if (
+            !issues.length
+        ) {
 
             return;
 
@@ -3932,11 +4019,9 @@ els.copyIssuesButton.addEventListener(
 
 
         copyText(
-
             buildDiscordIssueText(
                 issues
             )
-
         )
 
         .then(
