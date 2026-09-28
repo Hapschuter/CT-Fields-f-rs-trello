@@ -28,17 +28,28 @@ var status =
 // STATE
 // ======================================================
 
-var schema = null;
+var schema =
+    null;
 
-var storedValues = {};
 
-var currentListName = '';
+var storedValues =
+    {};
 
-var canWrite = false;
 
-var loaded = false;
+var currentListName =
+    '';
 
-var statusTimer = null;
+
+var canWrite =
+    false;
+
+
+var loaded =
+    false;
+
+
+var statusTimer =
+    null;
 
 
 // ======================================================
@@ -136,13 +147,12 @@ function checkPlausibility() {
 
 
     // ==================================================
-    // LISTE -> RANG
+    // LISTE -> ERWARTETER RANG
     // ==================================================
 
     /*
-     * Prüfung ausschließlich in diesen Spalten.
-     *
-     * Interessenten = Private First Class.
+     * Prüfung nur von Interessenten
+     * bis Commander.
      */
 
     var listRules = {
@@ -184,15 +194,19 @@ function checkPlausibility() {
 
 
     /*
-     * Karte außerhalb der relevanten Spalten:
-     *
+     * Außerhalb der relevanten Spalten
      * keine Plausibilitätswarnung.
      */
 
-    if (!listRules[normalizedList]) {
+    if (
+        !listRules[
+            normalizedList
+        ]
+    ) {
 
         plausibilityWarning.style.display =
             'none';
+
 
         return;
 
@@ -204,8 +218,6 @@ function checkPlausibility() {
     // ==================================================
 
     /*
-     * PFC steht bewusst nicht drin.
-     *
      * Private First Class hat
      * keine Positionsebene.
      */
@@ -262,6 +274,7 @@ function checkPlausibility() {
         plausibilityWarning.style.display =
             'none';
 
+
         return;
 
     }
@@ -275,8 +288,8 @@ function checkPlausibility() {
 
 
     /*
-     * Fehlender Rang ist kein
-     * Plausibilitätsfehler.
+     * Fehlender Rang:
+     * keine Plausibilitätswarnung.
      */
 
     if (!rank) {
@@ -284,27 +297,33 @@ function checkPlausibility() {
         plausibilityWarning.style.display =
             'none';
 
+
         return;
 
     }
 
 
     /*
-     * Nur bekannte Ränge prüfen.
-     *
-     * Custom / High General etc.
+     * Custom-Ränge / High General
      * werden ignoriert.
      */
 
     var isKnownRank =
-        rank === 'private-first-class' ||
-        !!positionRules[rank];
+        rank ===
+        'private-first-class'
+
+        ||
+
+        !!positionRules[
+            rank
+        ];
 
 
     if (!isKnownRank) {
 
         plausibilityWarning.style.display =
             'none';
+
 
         return;
 
@@ -317,11 +336,14 @@ function checkPlausibility() {
 
     if (
         rank !==
-        listRules[normalizedList]
+        listRules[
+            normalizedList
+        ]
     ) {
 
         plausibilityWarning.style.display =
             'block';
+
 
         return;
 
@@ -333,11 +355,16 @@ function checkPlausibility() {
     // ==================================================
 
     /*
-     * PFC wird hier bewusst übersprungen.
+     * PFC wird übersprungen.
      */
 
     if (
-        positionRules[rank] &&
+        positionRules[
+            rank
+        ]
+
+        &&
+
         positionField
     ) {
 
@@ -350,11 +377,14 @@ function checkPlausibility() {
 
         if (
             position !==
-            positionRules[rank]
+            positionRules[
+                rank
+            ]
         ) {
 
             plausibilityWarning.style.display =
                 'block';
+
 
             return;
 
@@ -396,7 +426,8 @@ function setControlColor(
         function (item) {
 
             control.classList.remove(
-                'color-' + item
+                'color-' +
+                item
             );
 
         }
@@ -439,7 +470,9 @@ function setStatus(
 
                     status.textContent =
                         canWrite
+
                             ? 'Änderungen werden automatisch gespeichert.'
+
                             : 'Nur-Lese-Ansicht';
 
                 },
@@ -460,7 +493,9 @@ function saveData() {
         !loaded ||
         !canWrite
     ) {
+
         return;
+
     }
 
 
@@ -481,35 +516,37 @@ function saveData() {
         'characterData',
 
         {
-
             v: 2,
 
             values:
                 storedValues
-
         }
 
-    ).then(function () {
+    ).then(
+        function () {
 
-        setStatus(
-            'Gespeichert ✓',
-            1200
-        );
+            setStatus(
+                'Gespeichert ✓',
+                1200
+            );
 
-    }).catch(function (error) {
+        }
+    ).catch(
+        function (error) {
 
-        console.error(
-            'CT Fields Save Error:',
-            error
-        );
+            console.error(
+                'CT Fields Save Error:',
+                error
+            );
 
 
-        setStatus(
-            'Fehler beim Speichern',
-            2500
-        );
+            setStatus(
+                'Fehler beim Speichern',
+                2500
+            );
 
-    });
+        }
+    );
 }
 
 
@@ -583,12 +620,15 @@ function createSelect(
 
 
     /*
-     * Gespeicherte Altwerte weiterhin anzeigen,
-     * falls eine Option später entfernt wurde.
+     * Alte gespeicherte Werte
+     * weiterhin anzeigen.
      */
 
     if (
-        normalized &&
+        normalized
+
+        &&
+
         !(
             field.options ||
             []
@@ -627,7 +667,8 @@ function createSelect(
 
 
     select.value =
-        normalized || '';
+        normalized ||
+        '';
 
 
     setControlColor(
@@ -674,6 +715,7 @@ function createSelect(
 
             checkPlausibility();
 
+
             saveData();
 
         }
@@ -700,13 +742,17 @@ function createInput(
 
 
     input.type =
-        field.type === 'date'
+        field.type ===
+        'date'
+
             ? 'date'
+
             : 'text';
 
 
     input.value =
-        currentValue || '';
+        currentValue ||
+        '';
 
 
     setControlColor(
@@ -869,103 +915,109 @@ function renderField(field) {
 // LADEN
 // ======================================================
 
-t.render(function () {
-
-    loaded =
-        false;
-
-
-    canWrite =
-        t.memberCanWriteToModel(
-            'card'
-        );
-
-
-    return Promise.all([
-
-        t.get(
-            'board',
-            'shared',
-            'ctSchema',
-            null
-        ),
-
-        t.get(
-            'card',
-            'shared',
-            'characterData',
-            {}
-        ),
-
-        t.list(
-            'name'
-        )
-
-    ]).then(function (values) {
-
-        schema =
-            ctDecodeSchema(
-                values[0]
-            );
-
-
-        storedValues =
-            extractValues(
-                values[1]
-            );
-
-
-        currentListName =
-            values[2] &&
-            values[2].name
-
-                ? values[2].name
-
-                : '';
-
-
-        fieldsGrid.innerHTML =
-            '';
-
-
-        (
-            schema.fields ||
-            []
-        ).forEach(
-            renderField
-        );
-
-
-        checkPlausibility();
-
-
-        status.textContent =
-            canWrite
-
-                ? 'Änderungen werden automatisch gespeichert.'
-
-                : 'Nur-Lese-Ansicht';
-
+t.render(
+    function () {
 
         loaded =
-            true;
+            false;
 
 
-        return t.sizeTo(
-            '#ctFields'
+        canWrite =
+            t.memberCanWriteToModel(
+                'card'
+            );
+
+
+        return Promise.all([
+
+            t.get(
+                'board',
+                'shared',
+                'ctSchema',
+                null
+            ),
+
+            t.get(
+                'card',
+                'shared',
+                'characterData',
+                {}
+            ),
+
+            t.list(
+                'name'
+            )
+
+        ]).then(
+            function (values) {
+
+                schema =
+                    ctDecodeSchema(
+                        values[0]
+                    );
+
+
+                storedValues =
+                    extractValues(
+                        values[1]
+                    );
+
+
+                currentListName =
+                    values[2] &&
+                    values[2].name
+
+                        ? values[2].name
+
+                        : '';
+
+
+                fieldsGrid.innerHTML =
+                    '';
+
+
+                (
+                    schema.fields ||
+                    []
+                ).forEach(
+                    renderField
+                );
+
+
+                checkPlausibility();
+
+
+                status.textContent =
+                    canWrite
+
+                        ? 'Änderungen werden automatisch gespeichert.'
+
+                        : 'Nur-Lese-Ansicht';
+
+
+                loaded =
+                    true;
+
+
+                return t.sizeTo(
+                    '#ctFields'
+                );
+
+            }
+        ).catch(
+            function (error) {
+
+                console.error(
+                    'CT Fields Load Error:',
+                    error
+                );
+
+
+                status.textContent =
+                    'CT Fields konnten nicht geladen werden.';
+
+            }
         );
 
-    }).catch(function (error) {
-
-        console.error(
-            'CT Fields Load Error:',
-            error
-        );
-
-
-        status.textContent =
-            'CT Fields konnten nicht geladen werden.';
-
-    });
-
-});
+    }
+);
