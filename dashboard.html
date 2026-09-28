@@ -1773,8 +1773,22 @@
 </div>
 
 
-<script src="./config.js"></script>
-<script src="./dashboard.js"></script>
+<script>
+(function () {
+    var version = Date.now();
+
+    var configScript = document.createElement('script');
+    configScript.src = './config.js?v=' + version;
+
+    configScript.onload = function () {
+        var dashboardScript = document.createElement('script');
+        dashboardScript.src = './dashboard.js?v=' + version;
+        document.body.appendChild(dashboardScript);
+    };
+
+    document.body.appendChild(configScript);
+})();
+</script>
 
 </body>
 
