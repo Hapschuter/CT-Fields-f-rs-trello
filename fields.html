@@ -175,9 +175,22 @@
 </div>
 
 
-<script src="./config.js"></script>
-<script src="./fields.js"></script>
+<script>
+(function () {
+    var version = Date.now();
 
+    var configScript = document.createElement('script');
+    configScript.src = './config.js?v=' + version;
+
+    configScript.onload = function () {
+        var fieldsScript = document.createElement('script');
+        fieldsScript.src = './fields.js?v=' + version;
+        document.body.appendChild(fieldsScript);
+    };
+
+    document.body.appendChild(configScript);
+})();
+</script>
 </body>
 
 </html>
